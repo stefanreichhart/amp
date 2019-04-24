@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <title>Google AMP Framework</title>
+    <title>AMP</title>
 
     <link rel="icon" href="img/zuehlke_logo.jpg">
     <link rel="stylesheet" href="css/reveal.css">
@@ -26,7 +26,197 @@
 <div class="reveal">
     <div class="slides">
         <section class="deck-slide">
-            <h1>Google AMP Framework</h1>
+            <h1>AMP</h1>
+        </section>
+        <section>
+            <h2>What is AMP ? </h2>
+            <ul>
+                <li>Framework by Google</li>
+                <li>(very) restrictive subset of HTML</li>
+            </ul>
+        </section>
+        <section>
+            <h2>Why another HTML dialect ?</h2>
+            <ul>
+                <li>fast, reliable &amp; predictable performance</li>
+                <li>no blocking or irresponsive elements/webpages</li>
+                <li>increased safety</li>
+                <li>(UFD) User-First-Driven webpages</li>
+            </ul>
+        </section>
+         <section>
+            <h2>User-First-Driven</h2>
+            <ul>
+                <li>load content as fast as possible</li>
+                <li>no layout changes after load</li>
+                <li>all <em>next</em> contents are fully prefetched</li>
+            </ul>
+        </section>
+        <section>
+            <h2>Restrictions</h2>
+            <ol>
+                <li>HTML</li>
+                <li>CSS</li>
+                <li>Javascript</li>
+            </ol>
+        </section>
+        <section>
+            <section>
+                <h2>HTML (small selection only)</h2>
+            </section>
+            <section>
+                <h2>Forbidden Tags in HTML</h2>
+                <ul>
+                    <li><code>object</code></li>
+                    <li><code>embed</code></li>
+                    <li><code>applet</code></li>
+                    <li><code>param</code></li>
+                    <li><code>frameset</code>, <code>frame</code>, ...</li>
+                </ul>
+                <div class="tip fragment">prevent additional resources</div>
+            </section>
+            <section>
+                <h2>Partially forbidden Tags in HTML</h2>
+                <ul>
+                    <li><code>form</code> &rarr; <code>amp-form</code></li>
+                    <li><code>input</code></li>
+                    <li><code>textarea</code></li>
+                    <li><code>select</code></li>
+                    <li><code>option</code></li>
+                    <li><code>script</code> (additional restrictions)</li>
+                </ul>
+                <div class="tip fragment">prevent unsafe code</div>
+            </section>
+            <section>
+                <h2>Forbidden Attributes in HTML</h2>
+                <ul>
+                    <li><code>on.*</code> (onclick, onmouseover, ...)</li>
+                </ul>
+                <div class="tip fragment">prevent unpredictable behaviour</div>
+            </section>
+            <section>
+                <h2>Forbidden in HTML ...</h2>
+                <ul>
+                    <li>Link-Schema: <code>javascript:</code></li>
+                    <li>Names, Ids: <code>.*-amp-.*</code>, <code>amp-.*</code></li>
+                    <li>non-sandboxed <code>iframe</code></li>
+                </ul>
+                <div class="tip fragment">prevent unsafe code</div>
+            </section>
+            <section>
+                <h2>Replaced Tags</h2>
+                <ul>
+                    <li><code>form</code> &rarr; <code>amp-form</code></li>
+                    <li><code>img</code> &rarr; <code>amp-img</code></li>
+                    <li><code>audio</code> &rarr; <code>amp-audio</code></li>
+                    <li><code>video</code> &rarr; <code>amp-video</code></li>
+                </ul>
+                <p>
+                    All tags must be fully initialized with <code>width</code>, <code>height</code>, <code>position</code>, <code>size</code>, <code>src</code>, ... (relative to the viewport size)
+                </p>
+                <div class="tip fragment">prevent recalc of layout, prevent additional resources</div>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h2>CSS (small selection only)</h2>
+            </section>
+            <section>
+                <h2>Forbidden</h2>
+                <ul>
+                    <li><code>@import</code></li>
+                    <li><code>!important</code></li>
+                    <li>scrollbars (anywhere)</li>
+                </ul>
+                <p><code>font-face</code> is allowed (with further restrictions)</p>
+                <div class="tip fragment">at most 1 request for page layout</div>
+            </section>
+            <section>
+                <h2>Allowed</h2>
+                <pre><code><style amp-custom></style></code></pre>
+                <ul>
+                    <li>inline head-<code>styles</code> only</li>
+                    <li>precompiled &amp; minified</li>
+                    <li>max. 50'000 bytes</li>
+                </ul>
+                <div class="tip fragment">at most 1 recalc after page-load</div>
+            </section>
+            <section>
+                <h2>Allowed Animations</h2>
+                <pre><code><style amp-keyframes></style></code></pre>
+                <ul>
+                    <li>only GPU accelerated animations</li>
+                    <li>max 500'000 bytes</li>
+                </ul>
+                <div class="tip fragment">no blocking UI</div>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h2>Javascript (small selection only)</h2>
+            </section>
+            <section>
+                <h2>Forbidden</h2>
+                <ul>
+                    <li>document.write()</li>
+                    <li>CSP: unsafe-inline, unsafe-eval</li>
+                </ul>
+                <div class="tip fragment">prevent unsafe code</div>
+            </section>
+            <section>
+                <h2>Allowed</h2>
+                <ul>
+                    <li>only <code>async</code> scripts</li>
+                    <li>3rd party scripts only in <code>iframe</code></li>
+                    <li>Only resources declared in <code>head</code></li>
+                </ul>
+                <div class="tip fragment">prevent recalc of layout, prevent additional resources</div>
+            </section>
+            <section>
+                <h2>Serious JS without Event-Handlers ?</h2>
+                <p>Not allowed ... but custom AMP-Component might be implemented</p>
+                <pre><code class="hljs" style="white-space: pre-wrap">
+
+<amp-youtube
+    data-videoid="mGENRKrdoGY"
+    credentials="omit"
+    data-param-controls=1
+    width="480" 
+    height="270">
+</amp-youtube>
+                </code></pre>
+                <p>Component-JS must be loaded <code>async</code>
+            </section>
+        </section>
+        <section>
+            <h2>Varia</h2>
+            <ul>
+                <li>No interactive code in <code>svg</code></li>
+                <li>special resource file-proxies</li>
+                <li>...</li>
+            </ul>
+        </section>
+        <section>
+            <section>
+                <h2>Wrap-Up</h2>
+            </section>
+            <section>
+                <h2>Pros</h2>
+                <ul>
+                    <li>Pages load faster (less requests, less repaints)</li>
+                    <li>Very well-suited for static pages</li>
+                    <li>Ads have a dedicated tag</li>
+                    <li>Lots of plugins/extensions available</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Cons / Discussion</h2>
+                <ul>
+                    <li>Restrictions might not be feasible for production (?)</li>
+                    <li>Success-Stories don't validate (!?)</li>
+                    <li>Angular, Vue.Js, React, ... ?</li>
+                </ul>
+            </section>
         </section>
         <section>
             <h2>Resources</h2>
