@@ -1,2 +1,1 @@
-# amp
-Google AMP Framework - A short presentation
+# AMP - A short presentation
